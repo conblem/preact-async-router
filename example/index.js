@@ -5,18 +5,20 @@ const { join } = require("path");
 const readFile = promisify(require("fs").readFile);
 const render = require("preact-render-to-string");
 const { h } = require("preact");
-const { createBrowserHistory } = require("history");
+const { createMemoryHistory } = require("history");
 
 const { ssr } = require("../dist/");
-const { default: Frontend, Routes } = require("./dist/");
+const { default: Frontend, Routes } = require("./dist/app.js");
 
 const templateFile = join(__dirname, "index.template.html");
 let template;
 
-app.use(express.static("dist"));
+const staticPath = join(__dirname, "dist");
+app.use("/dist", express.static(staticPath));
 
 app.get("*", ({ url }, res) => {
-  ssr(url, Routes({ history: createBrowserHistory() }))
+  console.log(url);
+  ssr(url, Routes({ history: createMemoryHistory() }))
     .then(route => {
       const html = render(h(Frontend, {}, route));
       res.send(template.replace("<!-- app -->", html));

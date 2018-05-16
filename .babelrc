@@ -1,5 +1,12 @@
 {
-  "presets": ["env"],
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false
+      }
+    ]
+  ],
   "plugins": [
     "transform-object-rest-spread",
     [
@@ -7,6 +14,7 @@
       {
         "pragma": "h"
       }
-    ]
+    ],
+    "syntax-dynamic-import"
   ]
 }
