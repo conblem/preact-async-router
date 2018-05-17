@@ -4,8 +4,7 @@ import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import babel from "rollup-plugin-babel";
 
 const baseconfig = () => ({
-  entry: "src/index.js",
-  sourceMap: "inline",
+  input: "src/index.js",
   plugins: [
     babel({
       exclude: "node_modules/**"
@@ -18,24 +17,40 @@ const baseconfig = () => ({
 export default [
   {
     ...baseconfig(),
-    format: "cjs",
-    dest: "dist/index.js"
+    output: {
+      format: "cjs",
+      sourcemap: "inline",
+      file: "dist/index.js"
+    }
   },
   {
     ...baseconfig(),
-    format: "es",
-    dest: "dist/index.m.js"
+    output: {
+      format: "es",
+      sourcemap: "inline",
+      file: "dist/index.m.js"
+    }
   },
   {
     ...baseconfig(),
-    format: "cjs",
-    entry: "example/src/app.js",
-    dest: "example/dist/app.js"
+    input: "example/src/app.js",
+    output: {
+      format: "cjs",
+      sourcemap: "inline",
+      file: "example/dist/app.js"
+    },
+    experimentalCodeSplitting: true,
+    experimentalDynamicImport: true
   },
   {
     ...baseconfig(),
-    format: "iife",
-    entry: "example/src/index.js",
-    dest: "example/dist/index.js"
+    input: "example/src/index.js",
+    output: {
+      format: "iife",
+      sourcemap: "inline",
+      file: "example/dist/index.js"
+    },
+    experimentalCodeSplitting: true,
+    experimentalDynamicImport: true
   }
 ];

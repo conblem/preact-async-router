@@ -4,7 +4,7 @@
   "description": "Async Preact Router",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c --experimentalCodeSplitting --experimentalDynamicImport",
+    "build": "rollup -c",
     "test": "jest"
   },
   "author": "conblem",

@@ -6,7 +6,7 @@ render(
     <Routes />
   </App>,
   document.body,
-  document.body.lastChild
+  document.querySelector("#app")
 );
 
 console.log("rendered");
