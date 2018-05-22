@@ -2,7 +2,9 @@
   "name": "preact-async-router",
   "version": "1.0.0",
   "description": "Async Preact Router",
-  "main": "index.js",
+  "source": "src/index.js",
+  "module": "dist/index.m.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c",
     "test": "jest"
