@@ -1,17 +1,12 @@
 import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
-import babel from "rollup-plugin-babel";
+import filesize from "rollup-plugin-filesize";
+import uglify from "rollup-plugin-uglify-es";
 
 const baseconfig = () => ({
   input: "src/index.js",
-  plugins: [
-    babel({
-      exclude: "node_modules/**"
-    }),
-    resolve(),
-    commonjs()
-  ]
+  plugins: [peerDepsExternal(), resolve(), commonjs(), uglify(), filesize()]
 });
 
 export default [
@@ -19,7 +14,7 @@ export default [
     ...baseconfig(),
     output: {
       format: "cjs",
-      sourcemap: "inline",
+      sourcemap: true,
       file: "dist/index.js"
     }
   },
@@ -27,30 +22,16 @@ export default [
     ...baseconfig(),
     output: {
       format: "es",
-      sourcemap: "inline",
+      sourcemap: true,
       file: "dist/index.m.js"
     }
   },
   {
     ...baseconfig(),
-    input: "example/src/app.js",
     output: {
       format: "cjs",
       sourcemap: "inline",
-      file: "example/dist/app.js"
-    },
-    experimentalCodeSplitting: true,
-    experimentalDynamicImport: true
-  },
-  {
-    ...baseconfig(),
-    input: "example/src/index.js",
-    output: {
-      format: "iife",
-      sourcemap: "inline",
-      file: "example/dist/index.js"
-    },
-    experimentalCodeSplitting: true,
-    experimentalDynamicImport: true
+      file: "dist/jest.js"
+    }
   }
 ];

@@ -3,8 +3,13 @@ import { Component } from "preact";
 
 export { Link, route } from "preact-router";
 
-export const ssr = (url, { children, nodeName }) =>
-  new nodeName({ url, children });
+export const ssr = (url, vnode) => {
+  const props = Object.assign({}, vnode.attributes, {
+    url: url,
+    children: vnode.children
+  });
+  return new vnode.nodeName(props);
+};
 
 class Router extends Component {
   constructor(props) {
@@ -23,32 +28,29 @@ class Router extends Component {
       return this.runRouter();
     }
   }
-
   runRouter() {
     const route = this.router.render(this.props, this.router.state);
     if (!route) {
       return Promise.resolve();
     }
-    return Promise.resolve(route.nodeName).then(nodeName => ({
-      ...route,
-      nodeName
-    }));
+    return Promise.resolve(route.nodeName).then(nodeName =>
+      Object.assign(route, { nodeName: nodeName })
+    );
   }
   runRouterWithSetState() {
-    return this.runRouter().then(route => this.setState({ route }));
+    return this.runRouter().then(route => {
+      this.setState({ route: route });
+    });
   }
-
   componentDidMount() {
     subscribers.push(this.runRouterWithSetState);
     this.runRouterWithSetState();
   }
-
   componentDidUpdate(oldProps) {
     if (this.props.children !== oldProps.children) {
       this.runRouterWithSetState();
     }
   }
-
   componentWillMount() {
     this.router.componentWillMount();
   }

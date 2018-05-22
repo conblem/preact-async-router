@@ -8,7 +8,9 @@ const { h } = require("preact");
 const { createMemoryHistory } = require("history");
 
 const { ssr } = require("../dist/");
-const { default: Frontend, Routes } = require("./dist/app.js");
+const { default: Frontend, Routes, actions } = require("./dist/app.js");
+
+console.log(actions);
 
 const templateFile = join(__dirname, "index.template.html");
 let template;
@@ -17,7 +19,6 @@ const staticPath = join(__dirname, "dist");
 app.use("/dist", express.static(staticPath));
 
 app.get("*", ({ url }, res) => {
-  console.log(url);
   ssr(url, Routes({ history: createMemoryHistory() }))
     .then(route => {
       const html = render(h(Frontend, {}, route));
